@@ -9,6 +9,7 @@ func main() {
 
 	writer := kafka.NewWriter(kafka.WriterConfig{
 		Brokers: []string{brokerAddress},
+		Topic:   "driver-location",
 	})
 
 	defer writer.Close()
