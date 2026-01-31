@@ -1,7 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"github.com/segmentio/kafka-go"
+)
 
 func main() {
-	fmt.Println("Someting")
+	brokerAddress := "localhost:9092"
+
+	writer := kafka.NewWriter(kafka.WriterConfig{
+		Brokers: []string{brokerAddress},
+	})
+
+	defer writer.Close()
 }
