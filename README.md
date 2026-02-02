@@ -17,7 +17,15 @@ Use Docker Compose to start a local Kafka broker:
 docker-compose up -d
 ```
 
-### 2. Run the Consumer
+### 2. Verify Topic Creation
+
+Ensure the `driver-location` topic was automatically created:
+
+```bash
+docker exec kafka /opt/kafka/bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+```
+
+### 3. Run the Consumer
 
 In a new terminal, start the consumer to wait for messages:
 
@@ -26,7 +34,7 @@ cd consumer
 go run main.go
 ```
 
-### 3. Run the Producer
+### 4. Run the Producer
 
 In another terminal, run the producer to send a driver location event:
 
