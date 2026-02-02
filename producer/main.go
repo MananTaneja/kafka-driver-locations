@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"math/rand"
 	"time"
 
 	"github.com/segmentio/kafka-go"
@@ -20,21 +21,22 @@ func main() {
 
 	defer writer.Close()
 
-	message := kafka.Message{
-		Key:   []byte("driver-key"),
-		Value: []byte("12"),
+	for {
+		randomValue := fmt.Sprintf("%d", rand.Intn(100))
+		message := kafka.Message{
+			Key:   []byte("driver-key"),
+			Value: []byte(randomValue),
+		}
+
+		fmt.Printf("Sending message: %s\n", randomValue)
+		err := writer.WriteMessages(context.Background(), message)
+
+		if err != nil {
+			fmt.Printf("error occured: %v\n", err)
+		} else {
+			fmt.Println("Message sent successfully.")
+		}
+
+		time.Sleep(2 * time.Second)
 	}
-
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	fmt.Println("Sending message to kafka")
-	err := writer.WriteMessages(ctx, message)
-
-	if err != nil {
-		fmt.Printf("error occured: %v", err)
-	}
-
-	fmt.Println("Message sent successfully.")
-	fmt.Println("Kafka producer has completed sending the message.")
 }

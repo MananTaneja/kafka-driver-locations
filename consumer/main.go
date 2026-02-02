@@ -23,13 +23,14 @@ func main() {
 
 	ctx := context.Background()
 
-	fmt.Println("Consuming a single message from Kafka...")
-	message, err := reader.ReadMessage(ctx)
-	if err != nil {
-		fmt.Printf("Failed to read message from Kafka: %v", err)
+	fmt.Println("Consuming messages from Kafka...")
+	for {
+		message, err := reader.ReadMessage(ctx)
+		if err != nil {
+			fmt.Printf("Failed to read message from Kafka: %v\n", err)
+			break
+		}
+
+		fmt.Printf("Message consumed: key=%s value=%s\n", string(message.Key), string(message.Value))
 	}
-
-	fmt.Printf("Message consumed: key=%s value=%s\n", string(message.Key), string(message.Value))
-
-	fmt.Println("Kafka message consumption complete. Exiting.")
 }
