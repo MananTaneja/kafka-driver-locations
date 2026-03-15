@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"math/rand"
 	"time"
@@ -10,6 +11,9 @@ import (
 )
 
 func main() {
+	n := flag.Int("n", 5, "number of messages to send")
+	flag.Parse()
+
 	brokerAddress := "localhost:9092"
 
 	writer := kafka.NewWriter(kafka.WriterConfig{
@@ -21,7 +25,7 @@ func main() {
 
 	defer writer.Close()
 
-	for {
+	for i := 0; i < *n; i++ {
 		randomValue := fmt.Sprintf("%d", rand.Intn(100))
 		message := kafka.Message{
 			Key:   []byte("driver-key"),
@@ -39,4 +43,6 @@ func main() {
 
 		time.Sleep(2 * time.Second)
 	}
+
+	fmt.Printf("Sent %d messages. Done.\n", *n)
 }
