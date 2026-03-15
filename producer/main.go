@@ -10,7 +10,6 @@ import (
 )
 
 func main() {
-	rand.Seed(time.Now().UnixNano())
 	brokerAddress := "localhost:9092"
 
 	writer := kafka.NewWriter(kafka.WriterConfig{
